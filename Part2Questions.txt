@@ -1,9 +1,21 @@
 Part 2 — QUESTIONS
 1. What is the difference between local authentication and RADIUS-based authentication?
+Local uses credentials stored on the device; RADIUS uses a centralized server.
+
 2. Why is aaa new-model required before any AAA configuration?
+Enables AAA features on the device; required to configure AAA.
+
 3. What happens if the RADIUS server becomes unreachable?
+Authentication fails; fallback methods like local may be used if configured.
+
 4. Why is SSH preferred over Telnet for device management?
+SSH encrypts traffic; Telnet sends data in plain text.
+
 5. Which plane of the network (control, data, management) is protected by AAA?
+Management plane.
+
 6. What type of traffic is visible on a SPAN destination port?
+Copies of selected source traffic for monitoring.
+
 7. Why is accounting useful in enterprise networks? 
-    To track malicios activities
+Tracks user activity for auditing, billing, and compliance.
