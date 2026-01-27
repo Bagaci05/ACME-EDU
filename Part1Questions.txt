@@ -1,0 +1,21 @@
+Part 1 - QUESTIONS:
+1. Why OSPF is more suitable than RIP for this network topology?
+For this topology with multiple routers, redundant paths, ISP connectivity, and growth potential, OSPF is clearly superior to RIP in performance, reliability, and scalability.
+
+2. Why the passive interfaces should be configured and what problem do they prevent?
+Passive interfaces are configured to stop routing protocol updates from being sent out user-facing or unnecessary interfaces.
+
+3. How the ROUTER ID is selected on your routers?
+The Router ID is chosen when the OSPF process starts and does not change unless OSPF is restarted or the RID is manually set.
+
+4. Why does OSPF use LSAa instead of sending full routing tables?
+OSPF uses LSAs instead of full routing tables to reduce bandwidth usage and improve scalability.
+
+5. What happens when you change the OSPF priority on an interface?
+Changing the OSPF priority on an interface affects the router’s eligibility to become the DR (Designated Router) or BDR (Backup DR) on that network.
+
+6. What would happen if Area 10 were configured as a stub area?
+If Area 10 is configured as a stub area, it cannot receive external (Type 5) LSAs from outside the OSPF autonomous system.
+
+7. How is the default route advertised in OSPF, and where is it visible?
+In OSPF, the default route is advertised using a Type 3 summary LSA with a 0.0.0.0/0 prefix. It is visible only inside the area that receives the advertisement, such as stub or NSSA areas.
