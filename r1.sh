@@ -39,9 +39,15 @@ line con 0
  exec-timeout 10 0 
 exit
 
+ip access-list standard VTY_ONLY
+permit 192.168.1.0 0.0.0.255
+deny any log
+exit
+
 line vty 0 15
  transport input ssh 
  exec-timeout 10 0 
+ access-class VTY_ONLY in
  login authentication VTY-AUTH
  authorization exec VTY-AUTH
  accounting exec VTY-ACCT
@@ -57,7 +63,13 @@ no ip http secure-server
 int g0/0 
 no sh
 
-
+ip access-list extended OUTSIDE_IN
+ permit tcp any host 203.0.113.20 eq 80
+ permit tcp any host 203.0.113.20 eq 443
+ deny ip any 192.168.1.0 0.0.0.255 log
+ deny ip any 192.168.2.0 0.0.0.255 log
+ permit ip any any
+exit
 
 int g0/0.10
 encaps dot 10
@@ -88,6 +100,7 @@ int g2/0
 ip address 172.16.0.2 255.255.255.252
 ipv6 address 2001:db8:a::2/64
 ipv6 address fe80::1 link-local
+ip access-group OUTSIDE_IN in
 no sh
 exit
 

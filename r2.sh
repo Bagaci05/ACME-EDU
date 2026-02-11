@@ -32,21 +32,21 @@ ip domain-name acme-edu.local
 crypto key generate rsa modulus 1024
 
 line con 0 
- logging synchronous 
+logging synchronous 
 exec-timeout 10 0 
- login local 
+login local
+exit
+
 line vty 0 15
- transport input ssh 
- exec-timeout 10 0 
- login authentication VTY-AUTH
- authorization exec VTY-AUTH
- accounting exec VTY-ACCT
+transport input ssh 
+exec-timeout 10 0 
+login authentication VTY-AUTH
+authorization exec VTY-AUTH
+accounting exec VTY-ACCT
 exit 
 
 ip ssh version 2
-
-exec-timeout 10 0 
- login local 
+login local 
 no ip http server 
 no ip http secure-server
 
@@ -67,11 +67,46 @@ no sh
 exit
 
 router ospf 1 
- router-id 2.2.2.2 
- network 10.0.0.0 0.0.0.255 area 0 
- network 192.168.2.0 0.0.0.255 area 0 
- passive-interface g0/0 
+router-id 2.2.2.2 
+network 10.0.0.0 0.0.0.255 area 0 
+network 192.168.2.0 0.0.0.255 area 0 
+passive-interface g0/0 
+exit
+
+ip access-list standard VTY_ONLY 
+permit 192.168.1.0 0.0.0.255 
+deny any log 
+exit
+
+ip access-list extended BRANCH_POLICY 
+deny ip 192.168.2.0 0.0.0.255 192.168.1.0 0.0.0.255 log 
+permit udp 192.168.2.0 0.0.0.255 any eq 53 
+permit tcp 192.168.2.0 0.0.0.255 any eq 53 
+permit tcp 192.168.2.0 0.0.0.255 any eq 80 
+permit tcp 192.168.2.0 0.0.0.255 any eq 443 
+permit icmp 192.168.2.0 0.0.0.255 any 
+deny ip any any log
+exit
+
+interface g0/0 
+ip access-group BRANCH_POLICY in 
+exit
+
+line vty 0 4 
+access-class VTY_ONLY in 
 exit
 
 router ospfv3 10 
- router-id 2.2.2.2
+router-id 2.2.2.2
+
+username R1 secret ChapSecret! 
+interface s0/0/0 
+ip address 10.0.0.2 255.255.255.0 
+encapsulation ppp 
+ppp authentication chap 
+no shutdown 
+exit 
+end 
+
+end
+wr
