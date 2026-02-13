@@ -141,7 +141,7 @@ interface g0/0.10
 interface g0/0.20
  ipv6 ospf 10 area 0
  ip ospf priority 200 
-interface g1/0
+interface s1/0
  ipv6 ospf 10 area 0
 interface g2/0
  ipv6 ospf 10 area 0
@@ -184,9 +184,8 @@ ip nat inside source static 192.168.1.130 203.0.113.20
 
 #PPP
 
-username R2 secret ChapSecret! 
+username R2 password ChapSecret! 
 interface s1/0
-ip address 10.0.0.1 255.255.255.0 
 encapsulation ppp 
 ppp authentication chap 
 no shutdown 
