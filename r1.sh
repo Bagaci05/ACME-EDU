@@ -89,7 +89,7 @@ no sh
 
 
 
-int g1/0
+int s1/0
 ip address 10.0.0.1 255.255.255.0
 ipv6 address 2001:db8:b::1/64
 ipv6 address fe80::1 link-local
@@ -158,3 +158,55 @@ exit
 ip route 0.0.0.0 0.0.0.0 172.16.0.1
 router ospf 1
  default-information originate
+
+
+
+#NAT
+
+int g0/0.10
+ ip nat inside
+int g0/0.20
+ ip nat inside
+int s1/0
+ ip nat inside
+int g2/0
+ ip nat outside
+exit
+
+ip access-list standard NAT_INSIDE
+ permit 192.168.1.0 0.0.0.127
+ permit 192.168.2.0 0.0.0.255
+exit
+ip nat inside source list NAT_INSIDE int g2/0 overload
+
+ip nat inside source static 192.168.1.130 203.0.113.20
+
+
+#PPP
+
+username R2 secret ChapSecret! 
+interface s1/0
+ip address 10.0.0.1 255.255.255.0 
+encapsulation ppp 
+ppp authentication chap 
+no shutdown 
+exit
+
+ip access-list extended VPN-TRAFFIC 
+permit ip 192.168.1.0 0.0.0.255 192.168.2.0 0.0.0.255
+
+crypto isakmp policy 10 
+encr aes 
+hash sha 
+authentication pre-share 
+group 2 
+lifetime 86400 
+crypto isakmp key IpsecPSK! address 10.0.0.2
+crypto ipsec transform-set TS esp-aes esp-sha-hmac 
+mode tunnel
+crypto map CMAP 10 ipsec-isakmp 
+set peer 10.0.0.2
+set transform-set TS 
+match address VPN-TRAFFIC 
+interface s1/0
+crypto map CMAP 

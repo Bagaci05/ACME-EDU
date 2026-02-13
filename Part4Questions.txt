@@ -1,0 +1,21 @@
+1. Why is NAT required in IPv4 networks?
+Because in the real world we are out of ipv4 addresses and every host cant have their public ip address not like if we would use ipv6.
+
+2. What is the difference between inside local and inside global addresses?
+Inside local - Is a privat ip of the hosts, mostly in 192.168.0.0/16 range
+Inside global - Your public IP, which is the ip that the outside packet will have as a source
+
+3. Why is PAT more scalable than static NAT?
+If we use NAT it uses a 1-1 translation, not really solve the problem of ip outage. If we use PAT every host will use the same inside global ip with different source port numbers
+
+4. What happens if the NAT table becomes full?
+The new translations wont be translated
+
+5. Why is a standard ACL sufficient for defining NAT sources?
+Becouse we just define the source which to be translated.
+
+6. Can NAT be considered a security mechanism? Why or why not?
+Yes, it can hide your local inside ip address, and the ip address structure of the local network
+
+7. Why is static NAT typically combined with ACLs or firewalls?
+It mostly for to get a server publicly available. In most cases we dont want the public to access all ports of the server

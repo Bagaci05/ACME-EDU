@@ -1,0 +1,24 @@
+1. Why is a standard ACL sufficient for VTY protection?
+Because we just filters the source, on the vty lines the destination will always be the remote access of the device.
+
+2. Why should extended ACLs be placed closest to the source?
+To not waste resources on routing a packet that will be droped latley
+
+3. What happens if the implicit deny any is not considered?
+The matches wont be shown in the statistics
+
+4. Why is ICMP sometimes allowed even in restrictive ACLs?
+To ensure the natwork is working.
+
+5. What is the difference between applying an ACL to:
+ -an interface
+ -VTY lines
+
+On interface we filter traffic from anywhere to anywhere,
+On VTY lines we filter traffic with the destination of the routers remote access
+
+6. How does ACL logging help during troubleshooting?
+We can track where is our packet is get stuck.
+
+7. What security risks exist if outside-in ACLs are not configured?
+Every traffic can get into my network and access any host of it.

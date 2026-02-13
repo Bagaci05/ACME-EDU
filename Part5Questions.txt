@@ -1,0 +1,18 @@
+1. Why is PPP preferred over HDLC in enterprise WANs?
+Because it has authentication and multiprotocol encapsulation support.
+2. What security advantage does CHAP have over PAP?
+It never sends the password as a plain text.
+3. Why must CHAP usernames match remote router hostnames?
+Because it uses the hostname to authenticate the router.
+4. What is the purpose of “interesting traffic” in IPSec?
+It defines which packets will go through the VPN.
+5. Difference between IKE Phase 1 and Phase 2?
+Phase 1 establishes a secure channel between the peers, phase 2 encrypt the actual data traffic.
+6. Why must crypto maps be applied to an interface?
+Because a crypto map only processes traffic on the interface where it is applied.
+7. What happens if IPSec ACLs do not match on both sides?
+IPSec SA negotiation fails or traffic is dropped.
+8. Difference between Site-to-Site and Remote-Access VPNs?
+Site-to-Site connects entire networks, remote connects individually.
+9. Can VPN replace NAT? Why or why not?
+No. VPN provides secure tunneling, while NAT provides address translation; they solve different problems and serve different purposes.

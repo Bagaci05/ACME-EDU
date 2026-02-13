@@ -7,12 +7,12 @@ ipv6 unicast-routing
 
 aaa new-model
 radius server RAD1
- address ipv4 192.168.1.130 auth-port 1812 acct-port 1813
- key cisco123
+address ipv4 192.168.1.130 auth-port 1812 acct-port 1813
+key cisco123
 exit
 
 aaa group server radius RAD-GRP
- server name RAD1
+server name RAD1
 exit
 
 aaa authentication login VTY-AUTH group RAD-GRP local
@@ -58,7 +58,7 @@ ipv6 ospf 10 area 0
 no sh
 exit
 
-int g1/0
+int s2/0
 ip address 10.0.0.2 255.255.255.0
 ipv6 address 2001:db8:b::1/64
 ipv6 address fe80::2 link-local
@@ -100,13 +100,30 @@ router ospfv3 10
 router-id 2.2.2.2
 
 username R1 secret ChapSecret! 
-interface s0/0/0 
+interface s2/0
 ip address 10.0.0.2 255.255.255.0 
 encapsulation ppp 
 ppp authentication chap 
 no shutdown 
-exit 
-end 
+exit
 
+ip access-list extended VPN-TRAFFIC 
+permit ip 192.168.2.0 0.0.0.255 192.168.1.0 0.0.0.255
+
+crypto isakmp policy 10 
+encr aes 
+hash sha 
+authentication pre-share 
+group 2 
+lifetime 86400 
+crypto isakmp key IpsecPSK! address 10.0.0.1
+crypto ipsec transform-set TS esp-aes esp-sha-hmac 
+mode tunnel
+crypto map CMAP 10 ipsec-isakmp 
+set peer 10.0.0.1
+set transform-set TS 
+match address VPN-TRAFFIC 
+interface s2/0
+crypto map CMAP 
 end
 wr
